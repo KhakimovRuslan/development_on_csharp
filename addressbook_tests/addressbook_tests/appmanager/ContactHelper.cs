@@ -7,31 +7,45 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System.Text.RegularExpressions;
 
 namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
+        private bool acceptNextAlert = true;
+
         public ContactHelper(ApplicationManager manager) : base(manager)
         {
         }
 
         public ContactHelper Create(ContactData contact)
-            {
-                InitContactCreation();
-                FillContactForm(contact);
-                SubmitContactCreation();
+        {
+            InitContactCreation();
+            FillContactForm(contact);
+            SubmitContactCreation();
 
-                manager.Navigator.ReturnToHomePage();
-                return this;
-            }
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        public ContactHelper Modify(int j, ContactData newData)
+        {
+            SelectContact(j);
+            ClickEditContact(j);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
         public ContactHelper Remove(int j)
         {
-                ClickEditContact(j);
-                DeleteContact();
+            SelectContact(j);
+            DeleteContact();
 
-                manager.Navigator.ReturnToHomePage();
-                return this;
+            manager.Navigator.ReturnToHomePage();
+            return this;
         }
 
         public ContactHelper FillContactForm(ContactData contact)
@@ -46,13 +60,15 @@ namespace WebAddressbookTests
         }
         public ContactHelper DeleteContact()
         {
-            driver.FindElement(By.XPath("(//input[@name='update'])[3]")).Click();
+            driver.FindElement(By.CssSelector("[value = Delete]")).Click();
+            driver.SwitchTo().Alert().Accept();
+            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
         }
 
-        public ContactHelper ClickEditContact(int j)
+        public ContactHelper SelectContact(int index)
         {
-            driver.FindElements(By.CssSelector("[title=Edit]"))[j].Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
             return this;
         }
         public ContactHelper InitContactCreation()
@@ -65,6 +81,51 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("submit")).Click();
             return this;
         }
+        public ContactHelper SubmitContactModification()
+        {
+            driver.FindElement(By.CssSelector("[value=Update]")).Click();
+            return this;
+        }
 
+        public ContactHelper ClickEditContact(int index)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//img[@title='Edit'])[" + index +"]")).Click();
+            return this;
+        }
+        //private bool IsAlertPresent()
+        //{
+        //    try
+        //    {
+        //        driver.SwitchTo().Alert();
+        //        return true;
+        //    }
+        //    catch (NoAlertPresentException)
+        //    {
+        //        return false;
+        //    }
+        //}
+
+        //private string CloseAlertAndGetItsText()
+        //{
+        //    try
+        //    {
+        //        IAlert alert = driver.SwitchTo().Alert();
+        //        string alertText = alert.Text;
+        //        if (acceptNextAlert)
+        //        {
+        //            alert.Accept();
+        //        }
+        //        else
+        //        {
+        //            alert.Dismiss();
+        //        }
+        //        return alertText;
+        //    }
+        //    finally
+        //    {
+        //        acceptNextAlert = true;
+        //    }
+        //}
     }
 }
