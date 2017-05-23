@@ -7,19 +7,15 @@ using NUnit.Framework;
 namespace WebAddressbookTests
 {
     [TestFixture]
-    public class ContactCreationTests : TestBase2
+    public class ContactCreationTests : TestBase
     {
         [Test]
         public void ContactCreationTest()
-        {
-            GoToHomePage();
-            Login(new AccountData("admin","secret"));
-            InitContactCreation();
+        {        
             ContactData contact = new ContactData("Ivan", "Ivanov");
             contact.Middlename = "Ivanovich";
-            FillContactForm(contact);
-            SubmitContactCreation();
-            ReturnToHomePage();
+
+            app.Contact.Create(contact);
         }
     }
 }
