@@ -10,12 +10,14 @@ namespace WebAddressbookTests
     {
         private string firstname;
         private string lastname;
-        private string middlename ="";
+        private string middlename;
 
-        public ContactData(string firstname, string lastname)
+        public ContactData(string firstname, string lastname, string middlename=null)
         {
             this.firstname = firstname;
             this.lastname = lastname;
+            this.middlename = middlename;
+            Middlename = middlename;
         }
 
         public string Firstname

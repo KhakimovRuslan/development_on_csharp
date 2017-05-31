@@ -7,6 +7,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System.Threading;
 
 namespace WebAddressbookTests
 {
@@ -20,7 +21,9 @@ namespace WebAddressbookTests
         protected GroupHelper groupHelper;
         protected ContactHelper contactHelper;
 
-        public ApplicationManager()
+        private static  ThreadLocal<ApplicationManager> app = new ThreadLocal<ApplicationManager>();
+
+        private ApplicationManager()
         {
             driver = new FirefoxDriver(new FirefoxBinary("C:\\Program Files (x86)\\Mozilla Firefox45\\firefox.exe"), new FirefoxProfile());
             baseUrl = "http://localhost:8081";
@@ -29,17 +32,10 @@ namespace WebAddressbookTests
             navigator = new NavigationHelper(this, baseUrl);
             groupHelper = new GroupHelper(this);
             contactHelper = new ContactHelper(this);
+            
         }
 
-
-        public IWebDriver Driver
-        {
-            get
-            {
-                return driver;
-            }
-        }
-        public void Stop()
+        ~ApplicationManager()
         {
             try
             {
@@ -50,7 +46,25 @@ namespace WebAddressbookTests
                 // Ignore errors if unable to close the browser
             }
         }
+        public static ApplicationManager GetInstance()
+        {
+            if(! app.IsValueCreated)
+            {
+                ApplicationManager newInstance = new ApplicationManager();               
+                newInstance.Navigator.GoToHomePage();
+                app.Value = newInstance;
+            }
+            return app.Value;       
+        }
 
+
+        public IWebDriver Driver
+        {
+            get
+            {
+                return driver;
+            }
+        }
         public LoginHelper Auth
         {
             get

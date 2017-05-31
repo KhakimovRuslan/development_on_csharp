@@ -13,7 +13,6 @@ namespace WebAddressbookTests
 {
     public class ContactHelper : HelperBase
     {
-        private bool acceptNextAlert = true;
 
         public ContactHelper(ApplicationManager manager) : base(manager)
         {
@@ -31,16 +30,33 @@ namespace WebAddressbookTests
 
         public ContactHelper Modify(int j, ContactData newData)
         {
-            SelectContact(j);
-            ClickEditContact(j);
-            FillContactForm(newData);
-            SubmitContactModification();
-            manager.Navigator.ReturnToHomePage();
-            return this;
+            //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
+            //{
+            //    Console.Out.WriteLine("Данного элемента не существует");
+            //    driver.Quit();
+            //}
+            //else
+            //{
+                if (IsElementPresent(By.CssSelector("[title=Details]")) == false)
+                {
+                    Create(new ContactData("Sergey","Sergeev","Sergeevich"));
+                }
+                SelectContact(j);
+                ClickEditContact(j);
+                FillContactForm(newData);
+                SubmitContactModification();
+                manager.Navigator.ReturnToHomePage();
+                return this;
+            //}
+
         }
 
         public ContactHelper Remove(int j)
         {
+            if (IsElementPresent(By.CssSelector("[title=Details]")) == false)
+            {
+                Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+            }
             SelectContact(j);
             DeleteContact();
 
@@ -50,19 +66,15 @@ namespace WebAddressbookTests
 
         public ContactHelper FillContactForm(ContactData contact)
         {
-            driver.FindElement(By.Name("firstname")).Clear();
-            driver.FindElement(By.Name("firstname")).SendKeys(contact.Firstname);
-            driver.FindElement(By.Name("middlename")).Clear();
-            driver.FindElement(By.Name("middlename")).SendKeys(contact.Middlename);
-            driver.FindElement(By.Name("lastname")).Clear();
-            driver.FindElement(By.Name("lastname")).SendKeys(contact.Lastname);
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("middlename"), contact.Middlename);
+            Type(By.Name("lastname"), contact.Lastname);
             return this;
         }
         public ContactHelper DeleteContact()
         {
             driver.FindElement(By.CssSelector("[value = Delete]")).Click();
             driver.SwitchTo().Alert().Accept();
-            //Assert.IsTrue(Regex.IsMatch(CloseAlertAndGetItsText(), "^Delete 1 addresses[\\s\\S]$"));
             return this;
         }
 
@@ -93,39 +105,6 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("(//img[@title='Edit'])[" + index +"]")).Click();
             return this;
         }
-        //private bool IsAlertPresent()
-        //{
-        //    try
-        //    {
-        //        driver.SwitchTo().Alert();
-        //        return true;
-        //    }
-        //    catch (NoAlertPresentException)
-        //    {
-        //        return false;
-        //    }
-        //}
 
-        //private string CloseAlertAndGetItsText()
-        //{
-        //    try
-        //    {
-        //        IAlert alert = driver.SwitchTo().Alert();
-        //        string alertText = alert.Text;
-        //        if (acceptNextAlert)
-        //        {
-        //            alert.Accept();
-        //        }
-        //        else
-        //        {
-        //            alert.Dismiss();
-        //        }
-        //        return alertText;
-        //    }
-        //    finally
-        //    {
-        //        acceptNextAlert = true;
-        //    }
-        //}
     }
 }

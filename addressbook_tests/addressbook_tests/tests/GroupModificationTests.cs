@@ -8,12 +8,12 @@ using NUnit.Framework;
 namespace WebAddressbookTests.tests
 {
     [TestFixture]
-    public class GroupModificationTests : TestBase
+    public class GroupModificationTests : AuthTestBase
     {
         [Test]
         public void GroupModificationTest()
-        {
-            GroupData newData = new GroupData("123");
+        {            
+            GroupData newData = new GroupData("новая группа");
             newData.Header = "456";
             newData.Footer = "789";
 
