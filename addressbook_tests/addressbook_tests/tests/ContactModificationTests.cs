@@ -18,10 +18,13 @@ namespace WebAddressbookTests.tests
         [Test]
         public void ContactModificationTest()
         {
-            ContactData newData = new ContactData("Petr", "Petrov");
-            newData.Middlename = "Petrovich";
 
-            app.Contact.Modify(1, newData);
+                if (app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
+                {
+                    app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+                }
+                app.Contact.Modify(1, new ContactData("Petr", "Petrov", "Petrovich"));
+            //}
         }
     }
 }

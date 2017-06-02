@@ -20,31 +20,36 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsList();
 
-            if (IsElementPresent(By.CssSelector("[name*=selected]")) == false)
-            {
-                Create(new GroupData("Для удаления"));
-            }
-
-            SelectGroup(v);
-            DeleteGroup();
-            ReturnToGroupPage();
-            return this;
+            //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
+            //{
+            //    throw new Exception("Количество элментов превышено");
+            //}
+            //else
+            //{
+                SelectGroup(v);
+                DeleteGroup();
+                ReturnToGroupPage();
+                return this;
+            //}
         }
 
         public GroupHelper Modify(int v, GroupData newData)
         {
             manager.Navigator.GoToGroupsList();
 
-            if (IsElementPresent(By.CssSelector("[name*=selected]")) == false)
-            {
-                Create(new GroupData("123"));
-            }            
-            SelectGroup(v);
-            InitGroupModification();
-            FillGroupform(newData);
-            SubmitGroupModification();
-            ReturnToGroupPage();
-            return this;
+            //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
+            //{
+            //    throw new Exception("Количество элментов превышено");
+            //}
+            //else
+            //{
+                SelectGroup(v);
+                InitGroupModification();
+                FillGroupform(newData);
+                SubmitGroupModification();
+                ReturnToGroupPage();
+                return this;
+            //}
         }
 
         public GroupHelper Create(GroupData group)

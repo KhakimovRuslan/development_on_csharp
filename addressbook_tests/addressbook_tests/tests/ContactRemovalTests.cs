@@ -12,9 +12,14 @@ namespace WebAddressbookTests
     [TestFixture]
     public class ContactRemovalTests : AuthTestBase
     {
+
         [Test]
         public void ContactRemovalTest()
-        {
+        {           
+            if (app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
+            {
+                app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+            }
             app.Contact.Remove(1);
         }             
     }

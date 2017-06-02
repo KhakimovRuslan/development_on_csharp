@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using OpenQA.Selenium;
 
 namespace WebAddressbookTests.tests
 {
@@ -12,12 +13,13 @@ namespace WebAddressbookTests.tests
     {
         [Test]
         public void GroupModificationTest()
-        {            
-            GroupData newData = new GroupData("новая группа");
-            newData.Header = "456";
-            newData.Footer = "789";
+        {
+            if (app.Groups.IsElementPresent(By.CssSelector("[name*=selected]")) == false)
+            {
+                app.Groups.Create(new GroupData("123"));
+            }
 
-            app.Groups.Modify(1, newData);
+            app.Groups.Modify(1, new GroupData("новая группа", "456", "789"));
         }
     }
 }

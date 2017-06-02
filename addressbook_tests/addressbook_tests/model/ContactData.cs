@@ -16,7 +16,6 @@ namespace WebAddressbookTests
         {
             this.firstname = firstname;
             this.lastname = lastname;
-            this.middlename = middlename;
             Middlename = middlename;
         }
 

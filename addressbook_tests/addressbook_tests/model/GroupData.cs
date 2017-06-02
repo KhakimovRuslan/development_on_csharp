@@ -9,12 +9,14 @@ namespace WebAddressbookTests
     public class GroupData
     {
         private string name;
-        private string header = null;
-        private string footer = null;
+        private string header;
+        private string footer;
 
-        public GroupData(string name)
+        public GroupData(string name, string header =null, string footer = null)
         {
             this.name = name;
+            Header = header;
+            Footer = footer;
         }      
         public string Name
         {

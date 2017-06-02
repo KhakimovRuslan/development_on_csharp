@@ -32,15 +32,10 @@ namespace WebAddressbookTests
         {
             //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
             //{
-            //    Console.Out.WriteLine("Данного элемента не существует");
-            //    driver.Quit();
+            //    throw new Exception("Количество элментов превышено");
             //}
             //else
             //{
-                if (IsElementPresent(By.CssSelector("[title=Details]")) == false)
-                {
-                    Create(new ContactData("Sergey","Sergeev","Sergeevich"));
-                }
                 SelectContact(j);
                 ClickEditContact(j);
                 FillContactForm(newData);
@@ -48,20 +43,25 @@ namespace WebAddressbookTests
                 manager.Navigator.ReturnToHomePage();
                 return this;
             //}
+            
 
         }
 
         public ContactHelper Remove(int j)
         {
-            if (IsElementPresent(By.CssSelector("[title=Details]")) == false)
-            {
-                Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
-            }
-            SelectContact(j);
-            DeleteContact();
+            //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
+            //{
+            //    throw new Exception("Количество элментов превышено");
+            //}
+            //else
+            //{
 
-            manager.Navigator.ReturnToHomePage();
-            return this;
+                SelectContact(j);
+                DeleteContact();
+
+                manager.Navigator.ReturnToHomePage();
+                return this;
+            //}
         }
 
         public ContactHelper FillContactForm(ContactData contact)

@@ -15,6 +15,11 @@ namespace WebAddressbookTests
         [Test]
         public void GroupRemovalTest()
         {
+            if (app.Groups.IsElementPresent(By.CssSelector("[name*=selected]")) == false)
+            {
+                app.Groups.Create(new GroupData("Для удаления"));
+            }
+
             app.Groups.Remove(1);
         }
     }
