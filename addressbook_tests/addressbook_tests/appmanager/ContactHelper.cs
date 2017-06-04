@@ -28,6 +28,24 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public List<ContactData> GetContactList()
+        {
+            List<ContactData> contacts = new List<ContactData>();
+
+            manager.Navigator.GoToHomePage();
+
+            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("[name=entry]"));            
+            foreach (IWebElement trElement in elements)
+            {
+                string lastName = trElement.FindElements(By.CssSelector("td"))[1].Text;
+                string firstName = trElement.FindElements(By.CssSelector("td"))[2].Text;
+                //string txt = element.Text;
+                //string[] words = txt.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                contacts.Add(new ContactData(firstName,lastName));
+            }
+            return contacts;
+        }
+
         public ContactHelper Modify(int j, ContactData newData)
         {
             //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
@@ -80,7 +98,7 @@ namespace WebAddressbookTests
 
         public ContactHelper SelectContact(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
         public ContactHelper InitContactCreation()
@@ -101,8 +119,8 @@ namespace WebAddressbookTests
 
         public ContactHelper ClickEditContact(int index)
         {
-            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + index + "]")).Click();
-            driver.FindElement(By.XPath("(//img[@title='Edit'])[" + index +"]")).Click();
+            driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
+            driver.FindElement(By.XPath("(//img[@title='Edit'])[" + (index+1) +"]")).Click();
             return this;
         }
 

@@ -6,6 +6,7 @@ using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
+using System.Collections.Generic;
 
 namespace WebAddressbookTests
 {
@@ -16,11 +17,23 @@ namespace WebAddressbookTests
         [Test]
         public void ContactRemovalTest()
         {           
-            if (app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
+            if (app.Driver.FindElements(By.CssSelector("[title=Details]")).Count < 2) //app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
             {
-                app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+                for (int i = 0; i < 2; i++)
+                {
+                    app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+                }               
             }
-            app.Contact.Remove(1);
+
+            List<ContactData> oldContacts = app.Contact.GetContactList();
+
+            app.Contact.Remove(0);
+
+            List<ContactData> newContacts = app.Contact.GetContactList();
+            oldContacts.RemoveAt(0);
+            oldContacts.Sort();
+            newContacts.Sort();
+            Assert.AreEqual(oldContacts, newContacts);
         }             
     }
 }

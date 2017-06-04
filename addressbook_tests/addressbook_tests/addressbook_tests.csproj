@@ -79,6 +79,7 @@
     <Compile Include="tests\Class1.cs" />
     <Compile Include="tests\ContactModificationTests.cs" />
     <Compile Include="tests\ContactRemovalTests.cs" />
+    <Compile Include="tests\Cycles.cs" />
     <Compile Include="tests\GroupCreationTests.cs" />
     <Compile Include="tests\GroupModificationTests.cs" />
     <Compile Include="tests\ContactCreationTests.cs" />
