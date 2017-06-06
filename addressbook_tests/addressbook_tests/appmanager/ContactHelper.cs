@@ -28,22 +28,58 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public List<ContactData> GetContactList()
-        {
-            List<ContactData> contacts = new List<ContactData>();
+        //public void CountContact()
+        //{
+        //    if (driver.FindElements(By.CssSelector("[title=Details]")).Count < 2)
+        //    {
+        //        for (int i = 0; i < 2; i++)
+        //        {
+        //            Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+        //        }
+        //    }
+        //}
 
+        public void CheckCountContact()
+        {
             manager.Navigator.GoToHomePage();
 
-            ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("[name=entry]"));            
-            foreach (IWebElement trElement in elements)
+            if (GetContactCount() < 2)
             {
-                string lastName = trElement.FindElements(By.CssSelector("td"))[1].Text;
-                string firstName = trElement.FindElements(By.CssSelector("td"))[2].Text;
-                //string txt = element.Text;
-                //string[] words = txt.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                contacts.Add(new ContactData(firstName,lastName));
+                for (int i = 0; i < 2; i++)
+                {
+                    Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+                }
             }
-            return contacts;
+        }
+
+        private List<ContactData> contactCache;
+
+
+
+        public List<ContactData> GetContactList()
+        {
+            if(contactCache == null)
+            {
+                contactCache = new List<ContactData>();
+                manager.Navigator.GoToHomePage();
+
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("[name=entry]"));
+                foreach (IWebElement trElement in elements)
+                {
+                    string lastName = trElement.FindElements(By.CssSelector("td"))[1].Text;
+                    string firstName = trElement.FindElements(By.CssSelector("td"))[2].Text;
+                    //string txt = element.Text;
+                    //string[] words = txt.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    contactCache.Add(new ContactData(firstName, lastName));
+                }               
+             }
+            return new List<ContactData>(contactCache);
+
+        }
+
+        public int GetContactCount()
+        {
+            return driver.FindElements(By.CssSelector("[name=entry]")).Count;
         }
 
         public ContactHelper Modify(int j, ContactData newData)
@@ -92,6 +128,7 @@ namespace WebAddressbookTests
         public ContactHelper DeleteContact()
         {
             driver.FindElement(By.CssSelector("[value = Delete]")).Click();
+            contactCache = null;
             driver.SwitchTo().Alert().Accept();
             return this;
         }
@@ -109,11 +146,13 @@ namespace WebAddressbookTests
         public ContactHelper SubmitContactCreation()
         {
             driver.FindElement(By.Name("submit")).Click();
+            contactCache = null;
             return this;
         }
         public ContactHelper SubmitContactModification()
         {
             driver.FindElement(By.CssSelector("[value=Update]")).Click();
+            contactCache = null;
             return this;
         }
 

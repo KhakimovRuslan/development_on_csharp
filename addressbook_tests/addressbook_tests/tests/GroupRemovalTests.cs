@@ -17,19 +17,15 @@ namespace WebAddressbookTests
         [Test]
         public void GroupRemovalTest()
         {
+            app.Navigator.GoToGroupsList();
 
-            if (app.Driver.FindElements(By.CssSelector("[name*=selected]")).Count < 2) //app.Groups.IsElementPresent(By.CssSelector("[name*=selected]")) == false)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    app.Groups.Create(new GroupData("Для удаления"));
-                }
-            }
-
+            app.Groups.CheckCountGroup();
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
             app.Groups.Remove(0);
+
+            Assert.AreEqual(oldGroups.Count - 1, app.Groups.GetGroupCount());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
 

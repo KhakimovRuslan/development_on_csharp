@@ -18,7 +18,7 @@ namespace WebAddressbookTests
 
         public GroupHelper Remove(int v)
         {
-            manager.Navigator.GoToGroupsList();
+//            manager.Navigator.GoToGroupsList();
 
             //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
             //{
@@ -33,16 +33,40 @@ namespace WebAddressbookTests
             //}
         }
 
-        public List<GroupData> GetGroupList()
-        {           
-            List<GroupData> groups = new List<GroupData>();
-            manager.Navigator.GoToGroupsList();
-            ICollection <IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
-            foreach (IWebElement element in elements)
+        public void CheckCountGroup()
+        {
+//            manager.Navigator.GoToGroupsList();
+
+            if (GetGroupCount() < 2)
             {
-                groups.Add(new GroupData(element.Text));
+                for (int i = 0; i < 2; i++)
+                {
+                    Create(new GroupData("Для удаления"));
+                }
             }
-            return groups;
+        }
+
+        private List<GroupData> groupCache = null;
+
+        public List<GroupData> GetGroupList()
+        {
+            if (groupCache == null)
+            {
+                groupCache = new List<GroupData>();
+                manager.Navigator.GoToGroupsList();
+                ICollection<IWebElement> elements = driver.FindElements(By.CssSelector("span.group"));
+                foreach (IWebElement element in elements)
+                {
+                    groupCache.Add(new GroupData(element.Text));
+                }
+            }           
+
+            return new List<GroupData> (groupCache);
+        }
+
+        public int GetGroupCount()
+        {
+            return driver.FindElements(By.CssSelector("span.group")).Count;
         }
 
         public GroupHelper Modify(int v, GroupData newData)
@@ -95,6 +119,7 @@ namespace WebAddressbookTests
         {
 
             driver.FindElement(By.Name("submit")).Click();
+            groupCache = null;
             return this;
         }
         public GroupHelper ReturnToGroupPage()
@@ -111,11 +136,13 @@ namespace WebAddressbookTests
         public GroupHelper DeleteGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
+            groupCache = null;
             return this;
         }
         public GroupHelper SubmitGroupModification()
         {
             driver.FindElement(By.Name("update")).Click();
+            groupCache = null;
             return this;
         }
 

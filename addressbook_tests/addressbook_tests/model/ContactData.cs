@@ -34,7 +34,7 @@ namespace WebAddressbookTests
 
         public override int GetHashCode()
         {
-            return Firstname.GetHashCode();
+            return (Firstname + Lastname).GetHashCode();
         }
 
         public int CompareTo(ContactData other)

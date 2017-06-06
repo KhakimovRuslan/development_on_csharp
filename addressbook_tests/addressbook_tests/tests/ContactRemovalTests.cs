@@ -16,20 +16,17 @@ namespace WebAddressbookTests
 
         [Test]
         public void ContactRemovalTest()
-        {           
-            if (app.Driver.FindElements(By.CssSelector("[title=Details]")).Count < 2) //app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
-            {
-                for (int i = 0; i < 2; i++)
-                {
-                    app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
-                }               
-            }
+        {
 
-            List<ContactData> oldContacts = app.Contact.GetContactList();
+            app.Contacts.CheckCountContact();
 
-            app.Contact.Remove(0);
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
 
-            List<ContactData> newContacts = app.Contact.GetContactList();
+            app.Contacts.Remove(0);
+
+            Assert.AreEqual(oldContacts.Count - 1, app.Contacts.GetContactCount());
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
             oldContacts.RemoveAt(0);
             oldContacts.Sort();
             newContacts.Sort();
