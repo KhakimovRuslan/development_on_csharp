@@ -59,9 +59,10 @@ namespace WebAddressbookTests
                 {
                     string lastName = trElement.FindElements(By.CssSelector("td"))[1].Text;
                     string firstName = trElement.FindElements(By.CssSelector("td"))[2].Text;
-                    //string txt = element.Text;
-                    //string[] words = txt.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                    contactCache.Add(new ContactData(firstName, lastName));
+                    contactCache.Add(new ContactData(firstName, lastName)
+                    {
+                        Id = trElement.FindElement(By.TagName("input")).GetAttribute("id")
+                    });
                 }               
              }
             return new List<ContactData>(contactCache);
