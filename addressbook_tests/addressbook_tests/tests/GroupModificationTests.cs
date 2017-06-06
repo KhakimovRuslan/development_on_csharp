@@ -14,6 +14,8 @@ namespace WebAddressbookTests.tests
         [Test]
         public void GroupModificationTest()
         {
+            app.Navigator.GoToGroupsList();
+
             if (app.Groups.IsElementPresent(By.CssSelector("[name*=selected]")) == false)
             {
                 app.Groups.Create(new GroupData("123"));
@@ -24,6 +26,8 @@ namespace WebAddressbookTests.tests
             GroupData myData = new GroupData("zzz","456", "789");
 
             app.Groups.Modify(0, myData);
+
+            Assert.AreEqual(oldGroups.Count, app.Groups.GetGroupCount());
 
             List<GroupData> newGroups = app.Groups.GetGroupList();
             oldGroups[0].Name = myData.Name;

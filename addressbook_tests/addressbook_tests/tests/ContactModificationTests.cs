@@ -18,18 +18,22 @@ namespace WebAddressbookTests.tests
         [Test]
         public void ContactModificationTest()
         {
-                if (app.Contact.IsElementPresent(By.CssSelector("[title=Details]")) == false)
+            app.Navigator.GoToHomePage();
+
+            if (app.Contacts.IsElementPresent(By.CssSelector("[title=Details]")) == false)
                 {
-                    app.Contact.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
+                    app.Contacts.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
                 }
 
-            List<ContactData> oldContacts = app.Contact.GetContactList();
+            List<ContactData> oldContacts = app.Contacts.GetContactList();
 
             ContactData newData = new ContactData("Petr", "Petrov");
 
-            app.Contact.Modify(0, newData);
+            app.Contacts.Modify(0, newData);
 
-            List<ContactData> newContacts = app.Contact.GetContactList();
+            Assert.AreEqual(oldContacts.Count, app.Contacts.GetContactCount());
+
+            List<ContactData> newContacts = app.Contacts.GetContactList();
             oldContacts[0].Firstname = newData.Firstname;
             oldContacts[0].Lastname = newData.Lastname;
             oldContacts.Sort();

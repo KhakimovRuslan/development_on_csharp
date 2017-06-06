@@ -18,7 +18,7 @@ namespace WebAddressbookTests
 
         public GroupHelper Remove(int v)
         {
-//            manager.Navigator.GoToGroupsList();
+            manager.Navigator.GoToGroupsList();
 
             //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
             //{
@@ -35,7 +35,7 @@ namespace WebAddressbookTests
 
         public void CheckCountGroup()
         {
-//            manager.Navigator.GoToGroupsList();
+            manager.Navigator.GoToGroupsList();
 
             if (GetGroupCount() < 2)
             {

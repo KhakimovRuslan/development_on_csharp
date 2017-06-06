@@ -20,6 +20,7 @@ namespace WebAddressbookTests
 
         public ContactHelper Create(ContactData contact)
         {
+            manager.Navigator.GoToHomePage();
             InitContactCreation();
             FillContactForm(contact);
             SubmitContactCreation();
@@ -28,16 +29,6 @@ namespace WebAddressbookTests
             return this;
         }
 
-        //public void CountContact()
-        //{
-        //    if (driver.FindElements(By.CssSelector("[title=Details]")).Count < 2)
-        //    {
-        //        for (int i = 0; i < 2; i++)
-        //        {
-        //            Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
-        //        }
-        //    }
-        //}
 
         public void CheckCountContact()
         {
