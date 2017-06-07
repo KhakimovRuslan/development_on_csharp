@@ -20,10 +20,7 @@ namespace WebAddressbookTests.tests
         {
             app.Navigator.GoToHomePage();
 
-            if (app.Contacts.IsElementPresent(By.CssSelector("[title=Details]")) == false)
-                {
-                    app.Contacts.Create(new ContactData("Sergey", "Sergeev", "Sergeevich"));
-                }
+            app.Contacts.CheckCountContact();
 
             List<ContactData> oldContacts = app.Contacts.GetContactList();
 

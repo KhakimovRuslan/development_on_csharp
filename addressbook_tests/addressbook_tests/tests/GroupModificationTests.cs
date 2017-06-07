@@ -16,10 +16,7 @@ namespace WebAddressbookTests.tests
         {
             app.Navigator.GoToGroupsList();
 
-            if (app.Groups.IsElementPresent(By.CssSelector("[name*=selected]")) == false)
-            {
-                app.Groups.Create(new GroupData("123"));
-            }
+            app.Groups.CheckCountGroup();
 
             List<GroupData> oldGroups = app.Groups.GetGroupList();
 
