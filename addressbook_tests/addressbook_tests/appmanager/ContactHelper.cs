@@ -34,7 +34,7 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToHomePage();
 
-            if (GetContactCount() < 2)
+            if (GetContactCount() < 1)
             {
                 for (int i = 0; i < 2; i++)
                 {

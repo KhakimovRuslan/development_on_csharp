@@ -37,7 +37,7 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsList();
 
-            if (GetGroupCount() < 2)
+            if (GetGroupCount() < 1)
             {
                 for (int i = 0; i < 2; i++)
                 {
