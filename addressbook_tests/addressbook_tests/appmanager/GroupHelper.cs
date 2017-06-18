@@ -63,8 +63,8 @@ namespace WebAddressbookTests
                     }   );
                 }
 
-                string allGroupsName = driver.FindElement(By.CssSelector("div#content form")).Text;
-                string[] parts = allGroupsName.Split('\n');
+                string allGroupName = driver.FindElement(By.CssSelector("div#content form")).Text;
+                string[] parts = allGroupName.Split('\n');
                 int shift = groupCache.Count - parts.Length;
                 for (int i = 0; i < groupCache.Count; i++)
                 {

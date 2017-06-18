@@ -87,7 +87,9 @@
     <Compile Include="tests\GroupRemovalTests.cs" />
     <Compile Include="tests\Log.cs" />
     <Compile Include="tests\LoginTests.cs" />
+    <Compile Include="tests\SearchTests.cs" />
     <Compile Include="tests\TestBase.cs" />
+    <Compile Include="tests\ContactHumanInformationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ClassDiagram3.cd" />
