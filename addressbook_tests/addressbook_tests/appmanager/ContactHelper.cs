@@ -29,45 +29,47 @@ namespace WebAddressbookTests
             return this;
         }
 
-        public List<string> GetContactInformationFromEditFormCompareHuman(int index)
-        {
-            manager.Navigator.GoToHomePage();
-            SelectContact(index);
-            ClickEditContact(index);
+        //public List<string> GetContactInformationFromEditFormCompareHuman(int index)
+        //{
+        //    manager.Navigator.GoToHomePage();
+        //    SelectContact(index);
+        //    ClickEditContact(index);
 
-            List<string> list = new List<string>();
+        //    List<string> list = new List<string>();
 
-            var contactInformation = driver.FindElements(By.CssSelector("[type = text]"));
-            string address = driver.FindElement(By.CssSelector("[name=address]")).GetAttribute("value");
-            list.Add(address);
-            for (int i = 0; i < contactInformation.Count; i++)
-            {
+        //    var contactInformation = driver.FindElements(By.CssSelector("[type = text]"));
+        //    string address = driver.FindElement(By.CssSelector("[name=address]")).GetAttribute("value");
+        //    list.Add(address);
+        //    for (int i = 0; i < contactInformation.Count; i++)
+        //    {
                 
-                string info = contactInformation[i].GetAttribute("value");
-                if (!string.IsNullOrEmpty(info))
-                {
-                    list.Add(info);
-                }                              
-            }
+        //        string info = contactInformation[i].GetAttribute("value");
+        //        if (!string.IsNullOrEmpty(info))
+        //        {
+        //            list.Add(info);
+        //        }                              
+        //    }
             
-            return list;
-        }
+        //    return list;
+        //}
 
-        public List<string> GetContactInformationFromHuman(int index)
+        public string GetContactInformationFromHuman(int index)
         {
 
             manager.Navigator.GoToHomePage();
             driver.FindElements(By.CssSelector("[title=Details]"))[index].Click();
-            string humanInformation = driver.FindElement(By.CssSelector("div#content")).Text.Replace("\n", "");
-            string[] parts = humanInformation.Split('\r').Where(n => !string.IsNullOrEmpty(n)).ToArray();
-            string[] fioPart = parts[0].Split(' ');
-            for (int i = 0; i < parts.Length; i++)
-            {
-                parts[i] = parts[i].Substring(parts[i].IndexOf(':') + 1).Trim();
-            }
+            string humanInformation = driver.FindElement(By.CssSelector("div#content")).Text + "\r\n";
 
-            string[] fullPart = fioPart.Concat(parts.Skip(1)).ToArray();
-            return fullPart.ToList();
+
+            //string[] parts = humanInformation.Split('\r').Where(n => !string.IsNullOrEmpty(n)).ToArray();
+            //string[] fioPart = parts[0].Split(' ');
+            //for (int i = 0; i < parts.Length; i++)
+            //{
+            //    parts[i] = parts[i].Substring(parts[i].IndexOf(':') + 1).Trim();
+            //}
+
+            //string[] fullPart = fioPart.Concat(parts.Skip(1)).ToArray();
+            return humanInformation;
 
         }
 
@@ -85,12 +87,19 @@ namespace WebAddressbookTests
             string mobilePhone = driver.FindElement(By.Name("mobile")).GetAttribute("value");
             string workPhone = driver.FindElement(By.Name("work")).GetAttribute("value");
 
+            string email = driver.FindElement(By.Name("email")).GetAttribute("value");
+            string email2 = driver.FindElement(By.Name("email2")).GetAttribute("value");
+            string email3 = driver.FindElement(By.Name("email3")).GetAttribute("value");
+
             return new ContactData(firstName, lastName)
             {
                 Address = address,
                 HomePhone = homePhone,
                 MobilePhone = mobilePhone,
-                WorkPhone = workPhone
+                WorkPhone = workPhone,
+                Email = email,
+                Email2 = email2,
+                Email3 = email3
             };
 
         }

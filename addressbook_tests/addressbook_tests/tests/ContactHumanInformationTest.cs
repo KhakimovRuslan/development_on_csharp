@@ -13,16 +13,13 @@ namespace WebAddressbookTests
     [TestFixture]
     class ContactHumanInformationTest : AuthTestBase
     {
-        int index = 1;
+        int index = 0;
 
         [Test]
         public void TestContactHumanInformation()
         {
-            List<string> fromHuman = app.Contacts.GetContactInformationFromHuman(index);
-            List<string> fromEdit = app.Contacts.GetContactInformationFromEditFormCompareHuman(index);
-
-            fromHuman.Sort();
-            fromEdit.Sort();
+            string fromHuman = app.Contacts.GetContactInformationFromHuman(index);
+            string fromEdit = app.Contacts.GetContactInformationFromEditForm(index).GetDisplayForm();
 
             Assert.AreEqual(fromHuman, fromEdit);
            

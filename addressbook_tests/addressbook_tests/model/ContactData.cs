@@ -10,6 +10,7 @@ namespace WebAddressbookTests
     public class ContactData : IEquatable<ContactData>, IComparable<ContactData>
     {
         private string allPhones;
+        private StringBuilder fullInformation;
 
         public ContactData(string firstname, string lastname, string middlename = null)
         {
@@ -65,6 +66,55 @@ namespace WebAddressbookTests
 
         public string WorkPhone { get; set; }
 
+        public string Email { get; set; }
+
+        public string Email2 { get; set; }
+
+        public string Email3 { get; set; }
+
+        public string GetDisplayForm()
+        {
+            fullInformation = new StringBuilder();
+            fullInformation.AppendLine(Firstname + " " + Lastname);
+            CheckProperty(Address);
+            CheckPhones();
+            CheckEmails();
+            return fullInformation.ToString();
+        }
+
+        private void CheckPhones()
+        {
+            CheckProperties(HomePhone, MobilePhone, WorkPhone);
+            CheckProperty(HomePhone, "H: ");
+            CheckProperty(MobilePhone, "M: ");
+            CheckProperty(WorkPhone, "W: ");
+        }
+
+        private void CheckEmails()
+        {
+            CheckProperties(Email, Email2, Email3);
+            CheckProperty(Email);
+            CheckProperty(Email2);
+            CheckProperty(Email3);
+        }
+
+        private void CheckProperties(params string[] parts)
+        {
+            foreach (var part in parts)
+            {
+                if (string.IsNullOrEmpty(part)) continue;
+                fullInformation.AppendLine();
+                return;
+            }
+        }
+
+
+        private void CheckProperty(string inform, string prefix = "")
+        {
+            if (string.IsNullOrEmpty(inform)) return;
+            fullInformation.AppendLine(prefix + inform);
+        }
+
         public string AllPhones
         {
             get
@@ -94,5 +144,6 @@ namespace WebAddressbookTests
         }
 
         public string Id { get; set; }
+
     }
 }
