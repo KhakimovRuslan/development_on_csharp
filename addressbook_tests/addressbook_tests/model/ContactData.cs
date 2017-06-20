@@ -52,6 +52,11 @@ namespace WebAddressbookTests
 
         }
 
+        public override string ToString()
+        {
+            return "firstname=" + Firstname + "\nlastname= " + Lastname + "\nmiddlename=" + Middlename;
+        }
+
         public string Firstname { get; set; }
 
         public string Lastname { get; set; }
