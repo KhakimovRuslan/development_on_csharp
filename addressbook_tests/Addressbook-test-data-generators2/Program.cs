@@ -10,7 +10,7 @@ using System.Xml.Serialization;
 using Newtonsoft.Json;
 using Excel = Microsoft.Office.Interop.Excel;
 
-namespace addressbook_test_data_generators2
+namespace addressbook_test_data_generators
 {
     class Program
     {
@@ -20,7 +20,7 @@ namespace addressbook_test_data_generators2
             int count = Convert.ToInt32(args[1]);
             string filename = args[2];
             string format = args[3];
-            StreamWriter writer = new StreamWriter(filename);
+           // StreamWriter writer = new StreamWriter(filename);
 
             if (typeData == "group")
             {
@@ -39,7 +39,8 @@ namespace addressbook_test_data_generators2
                     writeGroupsToExcelFile(groups, filename);
                 }
                 else
-                {                    
+                {
+                    StreamWriter writer = new StreamWriter(filename);
                     if (format == "csv")
                     {
                         writeGroupsToCsvFile(groups, writer);
@@ -55,12 +56,12 @@ namespace addressbook_test_data_generators2
                     else
                     {
                         System.Console.Out.Write("Unrecognized format " + format);
+                        writer.Close();
                     }
                 }
             }
             else if (typeData == "contact")
             {
-
                 List<ContactData> contacts = new List<ContactData>();
                 for (int i = 0; i < count; i++)
                 {
@@ -76,6 +77,7 @@ namespace addressbook_test_data_generators2
                 }
                 else
                 {
+                    StreamWriter writer = new StreamWriter(filename);
                     if (format == "csv")
                     {
                         writeContactsToCsvFile(contacts, writer);
@@ -92,9 +94,10 @@ namespace addressbook_test_data_generators2
                     {
                         System.Console.Out.Write("Unrecognized format " + format);
                     }
-                }                
+                    writer.Close();
+                }
             }
-            writer.Close();
+            
         }
 
 
