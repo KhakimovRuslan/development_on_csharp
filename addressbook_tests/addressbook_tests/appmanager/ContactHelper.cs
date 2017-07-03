@@ -29,29 +29,30 @@ namespace WebAddressbookTests
             return this;
         }
 
-        //public List<string> GetContactInformationFromEditFormCompareHuman(int index)
-        //{
-        //    manager.Navigator.GoToHomePage();
-        //    SelectContact(index);
-        //    ClickEditContact(index);
-
-        //    List<string> list = new List<string>();
-
-        //    var contactInformation = driver.FindElements(By.CssSelector("[type = text]"));
-        //    string address = driver.FindElement(By.CssSelector("[name=address]")).GetAttribute("value");
-        //    list.Add(address);
-        //    for (int i = 0; i < contactInformation.Count; i++)
-        //    {
-                
-        //        string info = contactInformation[i].GetAttribute("value");
-        //        if (!string.IsNullOrEmpty(info))
-        //        {
-        //            list.Add(info);
-        //        }                              
-        //    }
+        public void AddContactToGroup(ContactData contact, GroupData group)
+        {
+            manager.Navigator.GoToHomePage();
+            ClearGroupFilter();
+            SelectContact(contact.Id);
+            SelectGroupToAdd(group.Name);
+            CommitAddingContactToGroup();
             
-        //    return list;
-        //}
+        }
+
+        public void CommitAddingContactToGroup()
+        {
+            driver.FindElement(By.Name("add")).Click();
+        }
+
+        public void SelectGroupToAdd(string name)
+        {
+            new SelectElement(driver.FindElement(By.Name("to_group"))).SelectByText(name);
+        }
+
+        public void ClearGroupFilter()
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByText("[all]");
+        }
 
         public string GetContactInformationFromHuman(int index)
         {
@@ -138,7 +139,6 @@ namespace WebAddressbookTests
         private List<ContactData> contactCache;
 
 
-
         public List<ContactData> GetContactList()
         {
             if(contactCache == null)
@@ -168,38 +168,38 @@ namespace WebAddressbookTests
 
         public ContactHelper Modify(int j, ContactData newData)
         {
-            //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
-            //{
-            //    throw new Exception("Количество элментов превышено");
-            //}
-            //else
-            //{
-                SelectContact(j);
-                ClickEditContact(j);
-                FillContactForm(newData);
-                SubmitContactModification();
-                manager.Navigator.ReturnToHomePage();
-                return this;
-            //}
-            
-
+            SelectContact(j);
+            ClickEditContact(j);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
         }
 
+        public ContactHelper Modify(string Id, ContactData newData)
+        {
+            ClickEditContact(Id);
+            FillContactForm(newData);
+            SubmitContactModification();
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
         public ContactHelper Remove(int j)
         {
-            //if (driver.FindElements(By.CssSelector("[name=entry]")).Count < j)
-            //{
-            //    throw new Exception("Количество элментов превышено");
-            //}
-            //else
-            //{
-
                 SelectContact(j);
                 DeleteContact();
 
                 manager.Navigator.ReturnToHomePage();
                 return this;
-            //}
+        }
+
+        public ContactHelper Remove(ContactData contact)
+        {
+            SelectContact(contact.Id);
+            DeleteContact();
+
+            manager.Navigator.ReturnToHomePage();
+            return this;
         }
 
         public ContactHelper FillContactForm(ContactData contact)
@@ -222,6 +222,13 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
+
+        public ContactHelper SelectContact(String id)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @id = '"+id+"'])")).Click();
+            return this;
+        }
+
         public ContactHelper InitContactCreation()
         {
             driver.FindElement(By.LinkText("add new")).Click();
@@ -243,6 +250,12 @@ namespace WebAddressbookTests
         public ContactHelper ClickEditContact(int index)
         {       
             driver.FindElement(By.XPath("(//img[@title='Edit'])[" + (index+1) +"]")).Click();
+            return this;
+        }
+
+        public ContactHelper ClickEditContact(String contactId)
+        {
+            driver.FindElement(By.XPath("//a[@href='edit.php?id=" + contactId + "']")).Click();
             return this;
         }
 

@@ -8,6 +8,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System.Threading;
+using OpenQA.Selenium.Chrome;
 
 namespace WebAddressbookTests
 {
@@ -25,7 +26,8 @@ namespace WebAddressbookTests
 
         private ApplicationManager()
         {
-            driver = new FirefoxDriver(new FirefoxBinary("C:\\Program Files (x86)\\Mozilla Firefox45\\firefox.exe"), new FirefoxProfile());
+            //driver = new FirefoxDriver(new FirefoxBinary(@"C:\Program Files (x86)\Mozilla Firefox45\firefox.exe"), new FirefoxProfile());
+            driver = new ChromeDriver();
             baseUrl = "http://localhost:8081";
 
             loginHelper = new LoginHelper(this);

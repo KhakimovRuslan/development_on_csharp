@@ -20,17 +20,21 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsList();
 
-            //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
-            //{
-            //    throw new Exception("Количество элментов превышено");
-            //}
-            //else
-            //{
                 SelectGroup(v);
                 DeleteGroup();
                 ReturnToGroupPage();
                 return this;
-            //}
+        }
+
+
+        public GroupHelper Remove(GroupData group)
+        {
+            manager.Navigator.GoToGroupsList();
+
+            SelectGroup(group.Id);
+            DeleteGroup();
+            ReturnToGroupPage();
+            return this;
         }
 
         public void CheckCountGroup()
@@ -93,19 +97,24 @@ namespace WebAddressbookTests
         {
             manager.Navigator.GoToGroupsList();
 
-            //if (driver.FindElements(By.CssSelector("[name*=selected]")).Count < v)
-            //{
-            //    throw new Exception("Количество элментов превышено");
-            //}
-            //else
-            //{
                 SelectGroup(v);
                 InitGroupModification();
-                FillGroupform(newData);
+                FillGroupForm(newData);
                 SubmitGroupModification();
                 ReturnToGroupPage();
                 return this;
-            //}
+        }
+
+        public GroupHelper Modify(string toBeModifyId, GroupData group)
+        {
+            manager.Navigator.GoToGroupsList();
+
+            SelectGroup(toBeModifyId);
+            InitGroupModification();
+            FillGroupForm(group);
+            SubmitGroupModification();
+            ReturnToGroupPage();
+            return this;
         }
 
         public GroupHelper Create(GroupData group)
@@ -113,7 +122,7 @@ namespace WebAddressbookTests
             manager.Navigator.GoToGroupsList();
 
             InitGroupCreation();
-            FillGroupform(group);
+            FillGroupForm(group);
             SubmitGroupCreation();
             ReturnToGroupPage();
             return this;
@@ -125,7 +134,7 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("new")).Click();
             return this;
         }
-        public GroupHelper FillGroupform(GroupData group)
+        public GroupHelper FillGroupForm(GroupData group)
         {
 
             Type(By.Name("group_name"), group.Name);
@@ -153,6 +162,13 @@ namespace WebAddressbookTests
             driver.FindElement(By.XPath("(//input[@name='selected[]'])[" + (index+1) + "]")).Click();
             return this;
         }
+
+        public GroupHelper SelectGroup(String id)
+        {
+            driver.FindElement(By.XPath("(//input[@name='selected[]' and @value = '"+id+"'])")).Click();
+            return this;
+        }
+
         public GroupHelper DeleteGroup()
         {
             driver.FindElement(By.Name("delete")).Click();
@@ -171,6 +187,5 @@ namespace WebAddressbookTests
             driver.FindElement(By.Name("edit")).Click();
             return this;
         }
-
     }
 }
