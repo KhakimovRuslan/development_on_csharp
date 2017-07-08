@@ -29,6 +29,49 @@ namespace WebAddressbookTests
             return this;
         }
 
+        public ContactHelper ContactCreateToGroup(string id)
+        {
+            manager.Navigator.GoToHomePage();
+            InitContactCreation();
+            FillContactFormAddToGroup(new ContactData ("для удаления", "для удаления"), id);
+            SubmitContactCreation();
+
+            manager.Navigator.ReturnToHomePage();
+            return this;
+        }
+
+        private void FillContactFormAddToGroup(ContactData contact, string id)
+        {
+            Type(By.Name("firstname"), contact.Firstname);
+            Type(By.Name("middlename"), contact.Middlename);
+            Type(By.Name("lastname"), contact.Lastname);
+            new SelectElement(driver.FindElement(By.Name("new_group"))).SelectByValue(id);
+            //return this;
+        }
+
+        public void DeleteContactFromGroup(string id)
+        {
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue(id);
+            //int oldCount = driver.FindElements(By.CssSelector("form tr")).Count;
+            if (driver.FindElements(By.CssSelector("form tr")).Count < 2)
+            {
+                ContactCreateToGroup(id);
+                new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue(id);
+            }
+            driver.FindElements(By.CssSelector("[type = checkbox]"))[0].Click();
+            driver.FindElement(By.CssSelector("[name = remove]")).Click();
+            //driver.FindElement(By.CssSelector(".msgbox a")).Click();
+            //int newCount = driver.FindElements(By.CssSelector("form tr")).Count;
+        }
+
+        public int CountContactToGroup(string id)
+        {
+            manager.Navigator.GoToHomePage();
+            new SelectElement(driver.FindElement(By.Name("group"))).SelectByValue(id);
+            int count = driver.FindElements(By.CssSelector("form tr")).Count;
+            return count;
+        }
+
         public void AddContactToGroup(ContactData contact, GroupData group)
         {
             manager.Navigator.GoToHomePage();
@@ -36,7 +79,8 @@ namespace WebAddressbookTests
             SelectContact(contact.Id);
             SelectGroupToAdd(group.Name);
             CommitAddingContactToGroup();
-            
+            new WebDriverWait(driver, TimeSpan.FromSeconds(10)).Until(d => d.FindElements(By.CssSelector("div.msgbox")).Count > 0);
+                        
         }
 
         public void CommitAddingContactToGroup()

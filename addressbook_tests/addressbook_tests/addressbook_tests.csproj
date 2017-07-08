@@ -98,6 +98,7 @@
     <Compile Include="tests\ContactRemovalTests.cs" />
     <Compile Include="tests\ContactTestBase.cs" />
     <Compile Include="tests\Cycles.cs" />
+    <Compile Include="tests\DeleteContactToGroupTests.cs" />
     <Compile Include="tests\GroupContactRelation.cs" />
     <Compile Include="tests\GroupCreationTests.cs" />
     <Compile Include="tests\GroupModificationTests.cs" />

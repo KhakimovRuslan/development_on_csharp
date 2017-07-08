@@ -24,7 +24,6 @@ namespace WebAddressbookTests
             oldList.Sort();
 
             Assert.AreEqual(oldList, newList);
-
-        }
+          }
     }
 }
